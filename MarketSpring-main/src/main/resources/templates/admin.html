@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+            crossorigin="anonymous"></script>
+    <style>
+        /* Custom styles for the content boxes */
+        .content-box {
+            border: 5px solid #ccc;
+            min-height: 100px; /* Set the minimum height for better appearance */
+            text-align: center;
+        }
+        .content-box .name{
+            font-weight: 600;
+            font-size: 30px;
+        }
+        
+         .content-box .number{
+            font-size: 20px;
+        }
+        
+        /* Adjustments for responsiveness */
+        @media (max-width: 576px) {
+            .content-box {
+                min-height: 150px; /* Adjust the minimum height for smaller screens */
+            }
+        }
+        /* Custom styles for the content boxes */
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/home">Market manager</a>
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="container-fluid row collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul class=" justify-content-end navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/admin/vegetables">Vegetable</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/admin/categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/customer/all">Customers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    <div th:switch="${session.USERNAME}">
+                        <li th:case="null" class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <button th:case="*" type="button" class="btn btn-info" th:text="${session.USERNAME}"></button>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+    <!-- Navbar code here -->
+
+    <div class="container">
+        <div class="row my-4 justify-content-end">
+            <!-- 4 Content Boxes -->
+            <div class="col-sm-3 col-12 gy-4">
+                <div class="content-box" cl="content-box1">
+                    <p class="name">Số sản phẩm</p>
+                    <p class="number" th:text="${distinctVegetablesCount}"></p>
+                </div>
+            </div>
+            <div class="col-sm-3 col-12 gy-4">
+                <div class="content-box">
+                    <p class="name">Số khách hàng</p>
+                    <p class="number" th:text="${distinctCustomersCount}"></p>
+                </div>
+            </div>
+            <div class="col-sm-3 col-12 gy-4">
+                <div class="content-box">
+                    <p class="name">Số đơn hàng</p>
+                    <p class="number" th:text="${distinctOrderCount}"></p>
+                </div>
+            </div>
+            <div class="col-sm-3 col-12 gy-4">
+                <div class="content-box">
+                    <p class="name">Số loại hàng</p>
+                    <p class="number" th:text="${distinctCategoryCount}"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-end">
+           
+            <div class="col-sm-3 col-12 gy-4">
+                <div class="content-box">
+                    <p class="name">Tổng doanh thu</p>
+                    <p class="number" th:text="${#numbers.formatDecimal(distinctOrderTotal/1000000, 0, 0) + ','} + ${#numbers.formatDecimal((distinctOrderTotal % 1000000) / 100000, 0, 0) + ''}+ ${#numbers.formatDecimal((distinctOrderTotal % 100000) / 10000, 0, 0) +'0'+',000VNĐ'}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

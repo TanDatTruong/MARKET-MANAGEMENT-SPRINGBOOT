@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    </head>
+    <body>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/seller">SELLER</a>
+                    <button class="navbar-toggler " type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <form class="col-6" action="/seller/searchByKeyWords" method="GET">
+                        <div class="input-group">
+                            <input type="text" name="keyWords" th:value="${keyWords}" class="form-control" placeholder="Search for name, prices" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-secondary" type="submit"> Search</button>
+                            </div>
+                          </div>
+                    </form>
+                    <div class="container-fluid row collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                        <ul class=" justify-content-end navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Logout</a>
+                            </li>
+
+                            <div th:switch="${session.USERNAME}"> 
+                                <li th:case="null" class="nav-item">
+                                    <a class="nav-link" href="/login">Login</a>
+                                </li>
+                                <li th:case="*">
+                                    <button class="btn btn-info" type="button" th:text="${session.USERNAME}"> 
+                                        </button>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <div class="container ">
+           
+            <div class="row my-4 justify-content-end">
+                <form action="/seller/selling" class="col-4">
+                    <div class="col-12 input-group mb-3">
+                        <div class="input-group-append">
+                            <a class="btn btn-info" aria-current="page" href="/seller/vegetables/add_seller">ADD Vegetable</a>
+                        </div>
+                      </div>
+                </form>
+                <form action="/seller/filterByPrices" class="col-4">
+                  <div class="col-12 input-group mb-3">
+                        <select name="searchPrice" class="custom-select" id="inputGroupSelect02">
+                            <option  th:selected="${searchPrice =='des'}" value="des">High to low</option>
+                            <option th:selected="${searchPrice =='inc'}" value="inc">Low to high </option>
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="row gx-1">
+             
+                <div class="col-sm-3 col-12 gy-4">
+                    Category name:
+                    <form action="/seller/filterByCategory">
+                        <div class="form-check" th:each ="row, state: ${categories}">
+                            <input class="form-check-input" type="checkbox"  th:name ="idCate+${row.CategoryID}" th:value="${row.CategoryID}" th:checked="${#lists.contains(keys,'idCate'+{row.CategoryID})}">
+                            <label class="form-check-label" for="spices" th:utext="${row.Name}">
+                            </label>
+                        </div>
+                        <!-- name="action" value="filter" -->
+                        <button type="submit"  class="btn btn-info">Filter</button>
+                    </form>
+                </div>
+                <div class="col-sm-12 col-lg-9 col-12 row  gy-3 gx-2 d-flex justify-content-start" >
+                    <div class="col-12 col-md-6 col-sm-6 col-lg-4" th:each ="row, state: ${vegetables} ">
+                        <div class="card" style="width: 16.5rem;">
+                            <img class="card-img-top img-thumbnail" style="height: 286px; width:286px "  th:src="${row.Images}"
+                                alt="Card image cap">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title " th:text="${row.VegetableName}"></h5>
+                                    <p class="card-text rounded py-1 bg-warning text-white" th:utext="${row.Price}+ ' VNĐ'"></p>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>
